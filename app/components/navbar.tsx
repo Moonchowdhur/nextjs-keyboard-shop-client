@@ -1,6 +1,13 @@
-import Link from "next/link";
+"use client"
 
-const navbar = () => {
+import Link from "next/link";
+import { useState } from "react";
+import { FaHamburger } from "react-icons/fa";
+import { ImCross } from "react-icons/im";
+
+const Navbar = () => {
+  const [open, setOpen] = useState(false);
+
   return (
     <div className="bg-[#4A249D] flex items-center justify-between font-medium  h-[70px] p-4 md:px-12  text-white ">
       {/* keyboard logo or name */}
@@ -11,13 +18,17 @@ const navbar = () => {
           alt=""
         />
         <h2 className="text-xl md:text-2xl">
-          Mechanical <span className="text-[#ECC500]">Keyboard</span> Store
+          Keyboard <span className="text-[#ECC500]">World</span>
         </h2>
       </div>
       {/* others */}
       <div>
         <ul
-          className={`md:flex gap-8 z-10 md:bg-transparent text-white  font-medium md:static absolute text-xl items-center  `}
+          className={`md:flex gap-8 z-10 md:bg-transparent text-white  font-medium md:static absolute text-xl items-center   ${
+            open
+              ? "top-20 right-7 p-3 bg-[#695802]  text-black"
+              : "-top-48 right-0"
+          }`}
         >
           <li className="text-lg">
             <Link href="/">Home</Link>
@@ -33,8 +44,12 @@ const navbar = () => {
           </li>
         </ul>
       </div>
+      {/* hambarg menu */}
+      <div className="md:hidden text-xl" onClick={() => setOpen(!open)}>
+        {open ? <ImCross /> : <FaHamburger />}
+      </div>
     </div>
   );
 };
 
-export default navbar;
+export default Navbar;

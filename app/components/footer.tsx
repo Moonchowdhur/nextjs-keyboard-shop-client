@@ -108,7 +108,7 @@ const Footer = () => {
       <hr className="mt-8" />
       <div className="flex flex-col md:flex-row justify-around items-center py-5 text-center md:text-left">
         <p>&copy;2024 Keyboard World. All Rights Reserved</p>
-        <p>Powered by Keyboard Worl</p>
+        <p>Powered by Keyboard World</p>
       </div>
     </div>
   );
