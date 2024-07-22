@@ -17,6 +17,8 @@ const AllProducts = async () => {
 
   const displayedProducts = showAll ? product?.data : product?.data.slice(0, 6);
 
+  // console.log(showAll, displayedProducts.length);
+
   return (
     <div className="md:px-12 w-full   p-4 mt-16 rounded-md ">
       <div className="text-3xl mb-2 font-bold text-center">
@@ -31,13 +33,15 @@ const AllProducts = async () => {
         <div className="grid md:grid-cols-3 grid-cols-1 gap-5  justify-between items-center mt-10 rounded-lg">
           {/* card */}
 
-          {displayedProducts?.map((product: any) => {
+          {product?.data?.map((product: any) => {
             return (
               <div
                 key={product._id}
                 className="border-gray-200 bg-[#dbd3eb]  border p-4 rounded-lg"
               >
-                <div className="badge  relative hover:text-white top-5  m-2 rounded-full text-black bg-[#F0D133] text-base">${product?.price}</div>
+                <div className="badge  relative hover:text-white top-5  m-2 rounded-full text-black bg-[#F0D133] text-base">
+                  ${product?.price}
+                </div>
                 <img
                   src={product?.image}
                   className="h-[400px] w-[500px] rounded-xl mb-4"
@@ -79,14 +83,14 @@ const AllProducts = async () => {
           })}
           {/* card end */}
         </div>
-        {!showAll && (
+        {/* {!showAll && (
           <button
             onClick={() => setShowAll(true)}
             className="bg-[#a58a00] hover:text-white hover:bg-[#4A249D] mt-6 text-lg shadow-xl font-medium px-3 py-2 rounded-lg"
           >
             See More
           </button>
-        )}
+        )} */}
       </div>
     </div>
   );
