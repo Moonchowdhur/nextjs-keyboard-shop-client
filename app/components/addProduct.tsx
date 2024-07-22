@@ -1,14 +1,27 @@
 "use client";
 
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useContext } from "react";
 import swal from "sweetalert";
+import { AuthContext } from "./auth";
 
 const AddProduct = () => {
   //   const navigate = useRouter();
+  // @ts-expect-error: Unreachable code error
+  const { auth } = useContext(AuthContext);
+  // const router = useRouter();
+
+  console.log(auth);
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
+
+    if (!auth?.user?.email) {
+      return swal({
+        title: "Product not added, please login first!",
+        icon: "error",
+      });
+    }
 
     const formData = new FormData(e.target);
     const dataValue = {

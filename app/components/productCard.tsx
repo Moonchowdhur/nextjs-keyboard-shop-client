@@ -3,11 +3,23 @@ import { FaPen } from "react-icons/fa";
 import { MdAutoDelete } from "react-icons/md";
 import Link from "next/link";
 import swal from "sweetalert";
+import { useContext } from "react";
+import { AuthContext } from "./auth";
 
 const ProductCard = ({ item, fetchProduct }: any) => {
   const { title, price, image, _id, brand } = item;
 
+  // @ts-expect-error: Unreachable code error
+  const { auth } = useContext(AuthContext);
+
   const handleDelete = async (id: string) => {
+    if (!auth?.user?.email) {
+      return swal({
+        title: "Product not deleted, please login first!",
+        icon: "error",
+      });
+    }
+
     console.log(id, "id");
     try {
       // Show the confirmation dialog
@@ -15,7 +27,7 @@ const ProductCard = ({ item, fetchProduct }: any) => {
         title: "Are you sure?",
         text: "Once deleted, you will not be able to recover this product data!",
         icon: "warning",
-            // @ts-expect-error: Unreachable code error
+        // @ts-expect-error: Unreachable code error
         buttons: true,
         dangerMode: true,
       });

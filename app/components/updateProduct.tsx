@@ -1,26 +1,55 @@
+/* eslint-disable @next/next/no-async-client-component */
+
 "use client";
 
 import { useParams } from "next/navigation";
-import React from "react";
+import React, { useContext } from "react";
 import swal from "sweetalert";
+import { AuthContext } from "./auth";
 
-const UpdateProduct = () => {
+const UpdateProduct = async () => {
   const { id } = useParams();
+  // @ts-expect-error: Unreachable code error
+  const { auth } = useContext(AuthContext);
 
-  console.log(id);
+  const res = await fetch(
+    `https://redux-first-assignment.vercel.app/api/v1/product/${id}`
+  );
+  const sproduct = await res.json();
+
+  console.log(sproduct);
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
-
+    if (!auth?.user?.email) {
+      return swal({
+        title: "Product not updated, please login first!",
+        icon: "error",
+      });
+    }
     const formData = new FormData(e.target);
     const dataValue = {
-      title: formData.get("title"),
-      image: formData.get("image"),
-      brand: formData.get("brand"),
-      quantity: parseFloat(formData.get("quantity") as string),
-      price: parseFloat(formData.get("price") as string),
-      rating: parseFloat(formData.get("rating") as string),
-      description: formData.get("description"),
+      title: formData.get("title")
+        ? formData.get("title")
+        : sproduct?.data.title,
+      image: formData.get("image")
+        ? formData.get("image")
+        : sproduct?.data?.image,
+      brand: formData.get("brand")
+        ? formData.get("brand")
+        : sproduct?.data?.brand,
+      quantity: parseFloat(formData.get("quantity") as string)
+        ? parseFloat(formData.get("quantity") as string)
+        : sproduct?.data?.quantity,
+      price: parseFloat(formData.get("price") as string)
+        ? parseFloat(formData.get("price") as string)
+        : sproduct?.data?.price,
+      rating: parseFloat(formData.get("rating") as string)
+        ? parseFloat(formData.get("rating") as string)
+        : sproduct?.data?.rating,
+      description: formData.get("description")
+        ? formData.get("description")
+        : sproduct?.data?.description,
     };
 
     console.log(dataValue);
@@ -46,7 +75,7 @@ const UpdateProduct = () => {
           title: "Product updated!",
           text: "Successfull",
           icon: "success",
-              // @ts-expect-error: Unreachable code error
+          // @ts-expect-error: Unreachable code error
           button: "Done",
         });
         e.target.reset();
@@ -57,7 +86,7 @@ const UpdateProduct = () => {
         title: "Error",
         text: "Failed to update product",
         icon: "error",
-            // @ts-expect-error: Unreachable code error
+        // @ts-expect-error: Unreachable code error
         button: "Try Again",
       });
     }
@@ -79,7 +108,7 @@ const UpdateProduct = () => {
               name="title"
               placeholder="Title"
               className="input input-bordered w-full"
-              required
+              defaultValue={sproduct?.data?.title}
             />
           </label>
           <label className="form-control w-full">
@@ -91,7 +120,7 @@ const UpdateProduct = () => {
               name="brand"
               placeholder="Brand"
               className="input input-bordered w-full"
-              required
+              defaultValue={sproduct?.data?.brand}
             />
           </label>
         </div>
@@ -106,7 +135,7 @@ const UpdateProduct = () => {
               name="quantity"
               placeholder="Quantity"
               className="input input-bordered w-full"
-              required
+              defaultValue={sproduct?.data?.quantity}
             />
           </label>
 
@@ -119,7 +148,7 @@ const UpdateProduct = () => {
               name="price"
               placeholder="Price"
               className="input input-bordered w-full"
-              required
+              defaultValue={sproduct?.data?.price}
             />
           </label>
 
@@ -132,7 +161,7 @@ const UpdateProduct = () => {
               name="rating"
               placeholder="Rating"
               className="input input-bordered w-full"
-              required
+              defaultValue={sproduct?.data?.rating}
             />
           </label>
         </div>
@@ -146,7 +175,7 @@ const UpdateProduct = () => {
               name="image"
               placeholder="Image URL"
               className="input input-bordered w-full"
-              required
+              defaultValue={sproduct?.data?.image}
             />
           </label>
 
@@ -158,7 +187,7 @@ const UpdateProduct = () => {
               name="description"
               placeholder="Description"
               className="textarea textarea-bordered w-full"
-              required
+              defaultValue={sproduct?.data?.description}
             ></input>
           </label>
         </div>
